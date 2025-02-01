@@ -9,27 +9,26 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 app.use(express.json());
 app.use(cors());
-mongoose.connect(process.env.DB_URL)
+mongoose.connect(process.env.DB_URL,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
 .then(() => {
     console.log('Connected to MongoDB Atlas');
 });
 app.get('/',(req,res)=>{
-    res.send("HEY");
+    res.send('Hello World');
 })
 app.post('/register', async (req,res) => {
     console.log(req.body);
     try{
         const userDoc = await User.create(
             {
-                username: req.body.username,
-                fullName : req.body.fullname,
-                gender: req.body.gender,
                 email: req.body.email,
+                fullName : req.body.fullName,
                 password : bcryptjs.hashSync(req.body.password,salt),
-                Role: req.body.role
             }
         );
-        res.send(userDoc);
     }catch(e){
         console.log('Failed Submission');
         console.error(e);
