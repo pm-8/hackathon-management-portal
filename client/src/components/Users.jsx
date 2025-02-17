@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 const UserFilter = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
