@@ -1,12 +1,34 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Use React Router's navigation hook
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Logging in with:', { email, password });
+    try {
+      const response = await fetch('http://localhost:3000/auth/login', {
+        method: "POST",
+        body: JSON.stringify({ fullName, password }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      const data = await response.json();
+      console.log("Data:", data);
+
+      if (response.ok) {
+        console.log('Login Successful');
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('isLoggedIn', true);
+        localStorage.setItem('username', data.fullName);
+
+        navigate('/');
+      }
+    } catch (err) {
+      console.log('Login Failed:', err);
+    }
   };
 
   return (
@@ -17,16 +39,16 @@ const Login = () => {
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-green-200 mb-2 font-sans">
-              Email
+            <label htmlFor="fullName" className="block text-green-200 mb-2 font-sans">
+              Name
             </label>
             <input
-              type="email"
-              id="email"
+              type="text"
+              id="fullName"
               className="w-full px-4 py-2 border border-green-500 rounded-lg bg-green-700 text-white focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="Enter your name"
               required
             />
           </div>
@@ -53,10 +75,7 @@ const Login = () => {
         </form>
         <p className="mt-4 text-center font-sans">
           Don't have an account?{' '}
-          <a
-            href="/signup"
-            className="text-green-300 hover:underline hover:text-green-200 transition duration-300"
-          >
+          <a href="/signup" className="text-green-300 hover:underline hover:text-green-200 transition duration-300">
             Sign Up
           </a>
         </p>

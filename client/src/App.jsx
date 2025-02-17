@@ -3,6 +3,8 @@ import './App.css'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
 import Registration from './components/Registration'
+import Users from './components/Users'
+import Home from './components/Home'
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 function App() {
   const [count, setCount] = useState(0)
@@ -17,7 +19,11 @@ function App() {
     },
     {
       path: '/',
-      element: <><Navbar/><div>HORNY</div></>
+      element: <><Navbar/><Home/></>
+    },
+    {
+      path:'/users',
+      element:<><Navbar/><Users/></>
     }
   ])
   return (
