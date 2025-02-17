@@ -6,6 +6,7 @@ import Registration from './components/Registration'
 import Users from './components/Users'
 import Home from './components/Home'
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
+import CreateTeam from './components/CreateTeam'
 function App() {
   const [count, setCount] = useState(0)
   const router = createBrowserRouter([
@@ -24,6 +25,10 @@ function App() {
     {
       path:'/users',
       element:<><Navbar/><Users/></>
+    },
+    {
+      path:'/create-team',
+      element:<><Navbar/><CreateTeam/></>
     }
   ])
   return (
