@@ -47,7 +47,7 @@ function CreateTeam() {
 
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-md">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] h-[400px] border border-gray-300 flex flex-col items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-[600px] h-[400px] border border-gray-300 flex flex-col items-center justify-center">
             <h2 className="text-xl font-bold text-center">Select Users</h2>
             <div className="w-full flex-grow overflow-auto px-4">
               <UserFilter />

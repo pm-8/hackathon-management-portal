@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 const UserFilter = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
+  // const [selectedUsers, setSelectedUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -48,9 +49,12 @@ const UserFilter = () => {
       <div className="w-full max-w-md bg-white mt-4 rounded-lg shadow-md p-4">
         {filteredUsers.length > 0 ? (
           filteredUsers.map((user) => (
+            <div>
             <div key={user._id} className="p-2 border-b border-gray-300">
               <p className="text-lg font-semibold">{user.fullName}</p>
               <p className="text-sm text-gray-600">{user.email}</p>
+            </div>
+            <input type = "checkbox"></input>
             </div>
           ))
         ) : (
