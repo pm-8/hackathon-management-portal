@@ -9,18 +9,7 @@ function CreateTeam() {
     e.preventDefault();
     console.log("Hit the button");
     try {
-      const response = await fetch("http://localhost:3000/team/create-team", {
-        method: "POST",
-        body: JSON.stringify({ teamName }),
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log(data);
+      localStorage.setItem('teamName', teamName);
       setShowModal(true);
     } catch (err) {
       console.error("Error in creating team name", err);
@@ -58,6 +47,7 @@ function CreateTeam() {
             >
               Close
             </button>
+            {/* <button>Create</button> */}
           </div>
         </div>
       )}

@@ -17,9 +17,9 @@ router.use(cors({
 }));
 router.use(express.json());
 router.post('/create-team', async (req,res) => {
-    console.log("Hit the server");
-    const teamName = req.body.teamName;
-    console.log(teamName);
-    res.send(req.body);
+    console.log("Request received");
+    console.log(req.body);
+    
+    res.json({message:"Team Created"});
 })
 module.exports = router;

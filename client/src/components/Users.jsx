@@ -1,10 +1,41 @@
 import React, { useState, useEffect } from "react";
-const UserFilter = () => {
-  const [users, setUsers] = useState({});
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  // const [selectedUsers, setSelectedUsers] = useState([]);
+import { use } from "react";
 
+const UserFilter = () => {
+  const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [teamname, setTeamName] = useState();
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [teamUsers, setTeamUsers] = useState([]);
+  const handle = (id,name,checkbox) => {
+    if(checkbox.checked && !teamUsers.some(user => user.id === id)) {
+    setTeamUsers([...teamUsers, {id,name}]);
+    console.log({id,name});
+    console.log("Added");
+    }
+    if(!checkbox.checked && teamUsers.some(user => user.id === id)) {
+      setTeamUsers(teamUsers.filter(user => user.id !== id));
+      console.log("Removed");
+    }
+    teamUsers.forEach(element => {
+      console.log(element.name);
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setTeamName(localStorage.getItem("teamName"));
+    // console.log("hekhakhf",teamname);
+    try{
+      const response = await fetch("http://localhost:3000/team/create-team",{
+        method:"POST",
+        body:JSON.stringify({teamname,teamUsers}),
+        headers:{"Content-Type":"application/json"}
+      });
+    }
+    catch(err){
+      console.error("Error in creating team name",err);
+    }
+  }
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -22,7 +53,6 @@ const UserFilter = () => {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
     const searchQuery = e.target.value.toLowerCase();
-    
     const filtered = users.filter(
       (user) =>
         user.fullName.toLowerCase().includes(searchQuery) ||
@@ -34,33 +64,34 @@ const UserFilter = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
-      <h1 className="text-3xl font-bold mb-4">Find Users</h1>
-
-      {/* Search Bar */}
-      <input
-        type="text"
-        placeholder="Search by name or email..."
-        value={searchTerm}
-        onChange={handleSearch}
-        className="w-full max-w-md px-4 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-green-400"
-      />
-
       {/* User List */}
       <div className="w-full max-w-md bg-white mt-4 rounded-lg shadow-md p-4">
         {filteredUsers.length > 0 ? (
           filteredUsers.map((user) => (
-            <div>
-            <div key={user._id} className="p-2 border-b border-gray-300">
-              <p className="text-lg font-semibold">{user.fullName}</p>
-              <p className="text-sm text-gray-600">{user.email}</p>
-            </div>
-            <input type = "checkbox"></input>
+            <div key={user._id} className="flex items-center justify-between p-2 border-b border-gray-300">
+              <div>
+                <p className="text-lg font-semibold">{user.fullName}</p>
+                <p className="text-sm text-gray-600">{user.email}</p>
+              </div>
+              <input
+                type="checkbox"
+                className="w-6 h-6 border-2 border-gray-400 rounded-full checked:bg-green-400 focus:outline-none"
+                onChange={(e) => handle(user._id, user.fullName, e.target)}
+              />
             </div>
           ))
         ) : (
           <p className="text-center text-gray-500">No users found</p>
         )}
       </div>
+
+      {/* Create Button (Moved Below the User List) */}
+      <button
+        onClick={handleSubmit}
+        className="mt-6 px-6 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition"
+      >
+        Create Team
+      </button>
     </div>
   );
 };
