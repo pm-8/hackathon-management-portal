@@ -3,7 +3,8 @@ const router = express.Router();
 const cors = require("cors");
 const bcryptjs = require('bcryptjs');
 const jwt = require("jsonwebtoken");
-const User = require('../models/User');
+// const User = require('../models/User');
+const Team = require('../models/Team');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -17,9 +18,18 @@ router.use(cors({
 }));
 router.use(express.json());
 router.post('/create-team', async (req,res) => {
-    console.log("Request received");
-    console.log(req.body);
-    
-    res.json({message:"Team Created"});
+    console.log("Request Body",req.body);
+    try{
+        const teamDoc = await Team.create({
+            teamName : req.body.teamname,
+            teamMembers: req.body.teamUsers,
+            teamLeader: req.body.teamUsers[0].name
+        });
+        res.send(teamDoc);
+    }
+    catch(err){
+        console.error("Error in creating team",err);
+        res.status(400).json(err);
+    }
 })
 module.exports = router;
