@@ -32,4 +32,15 @@ router.post('/create-team', async (req,res) => {
         res.status(400).json(err);
     }
 })
+router.get('/teams', async (req,res) => {
+    try{
+        const teamDoc = await Team.find();
+        res.send(teamDoc);
+    }
+    catch(err){
+        console.error("Error in fetching teams",err);
+        res.status(400).json(err);
+    }
+}
+)
 module.exports = router;

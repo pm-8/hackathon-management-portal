@@ -4,11 +4,11 @@ import Login from './components/Login'
 import Navbar from './components/Navbar'
 import Registration from './components/Registration'
 import Users from './components/Users'
+import JoinTeam from './components/JoinTeam'
 import Home from './components/Home'
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 import CreateTeam from './components/CreateTeam'
 function App() {
-  const [count, setCount] = useState(0)
   const router = createBrowserRouter([
     {
       path: '/login',
@@ -29,6 +29,10 @@ function App() {
     {
       path:'/create-team',
       element:<><Navbar/><CreateTeam/></>
+    },
+    {
+      path:'/join-team',
+      element:<><Navbar/><JoinTeam/></>
     }
   ])
   return (
