@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 function JoinTeam() {
   const [teams, setTeams] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [userId, setUserId] = useState("");
+  const [user, setUser] = useState({});
   useEffect(()=>{
     const fetchTeam = async()=>{
       try{
@@ -16,8 +18,11 @@ function JoinTeam() {
     fetchTeam()
   },[]);
   const joinTeam = async (teamId) => {
+      setUserId(localStorage.getItem("id"));
+      setUser(localStorage.getItem("username"));
     try {
-      const res = await fetch(`http://localhost:3000/team/join/${teamId}`, {
+      console.log("Joining team");
+      const res = await fetch(`http://localhost:3000/team/join-team/${teamId}/${userId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +59,7 @@ function JoinTeam() {
                 <h2 className="text-xl font-semibold text-gray-700">{team.teamName}</h2>
                 <p className="text-gray-500">Leader: {team.teamLeader}</p>
               </div>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" onClick={() => joinTeam(team._id)}>
                 Join
               </button>
             </li>

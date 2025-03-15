@@ -59,6 +59,7 @@ router.post('/login', async (req, res) => {
                 message: 'Login Successful',
                 token,
                 fullName: userDoc.fullName,
+                id:userDoc._id
             });
         } else {
             console.log("Wrong Password");

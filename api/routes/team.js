@@ -3,7 +3,7 @@ const router = express.Router();
 const cors = require("cors");
 const bcryptjs = require('bcryptjs');
 const jwt = require("jsonwebtoken");
-// const User = require('../models/User');
+const User = require('../models/User');
 const Team = require('../models/Team');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -32,6 +32,28 @@ router.post('/create-team', async (req,res) => {
         res.status(400).json(err);
     }
 })
+router.post('/join-team/:teamId/:userId', async (req, res) => {
+    try {
+        // console.log(req.body);
+        console.log("Request Body",req.params);
+        const teamDoc = await Team.findById(req.params.teamId);
+        const user = await User.findById(req.params.userId);
+        console.log("Team Doc",teamDoc);
+        if (!teamDoc) {
+            console.log("Team not found");
+            return res.status(404).json({ error: "Team not found" });
+        }
+        if(user){
+            teamDoc.teamMembers.push({id:user._id,name:user.fullName});
+            await teamDoc.save(); // Save changes
+        }
+        res.send(teamDoc);
+    } catch (err) {
+        console.error("Error in joining team", err);
+        res.status(400).json(err);
+    }
+});
+
 router.get('/teams', async (req,res) => {
     try{
         const teamDoc = await Team.find();
