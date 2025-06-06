@@ -14,6 +14,11 @@ const userSchema = mongoose.Schema(
         required : true,
         unique: false,
       },
+      githubUsername: {
+        type: String,
+        default: "",
+        required: true,
+      },
     },
     { timestamps: true }
   );

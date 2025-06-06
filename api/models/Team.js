@@ -12,7 +12,12 @@ const teamSchema = mongoose.Schema(
         teamLeader:{
             type: String,
             required: true,
-        }
+        },
+        githubRepo: {
+            type: String,
+            required: true,
+            default: "",
+        },
     }
 )
 const Team = mongoose.model("Team",teamSchema);
