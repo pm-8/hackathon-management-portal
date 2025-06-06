@@ -10,6 +10,8 @@ exports.createWebhook = async (repoUrl, teamId) => {
   const apiUrl = `https://api.github.com/repos/${owner}/${repo}/hooks`;
   const webhookUrl = `${process.env.API_URL}/api/github-webhook/${teamId}`;
     console.log("Webhook URL:", webhookUrl);
+    console.log('Loaded GitHub token:', process.env.GITHUB_TOKEN ? 'Yes' : 'No');
+
   try {
     const response = await axios.post(
       apiUrl,

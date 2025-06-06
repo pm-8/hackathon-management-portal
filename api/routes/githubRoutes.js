@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const cors = require("cors");
-const  commitController = require("../controllers/commitController");
-
+const {linkRepo, githubWebhookHandler} = require("../controllers/commitController");
 router.use(
   cors({
     origin: "http://localhost:5173", // Allow your frontend origin
@@ -10,6 +9,7 @@ router.use(
   })
 );
 router.use(express.json());
-router.post("/github-webhook/:teamId",commitController.linkRepo)
+router.post("/linkRepo",linkRepo)
+router.post("/github-webhook/:teamId", githubWebhookHandler);
 module.exports = router;
 

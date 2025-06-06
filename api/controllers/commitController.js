@@ -1,6 +1,6 @@
 const express = require('express');
 const githubWebhook = require('../utils/githubWebhook');
-exports.linkRepo = async (req,res) => {
+const linkRepo = async (req,res) => {
     const { repoUrl, teamId } = req.body;
     console.log("Request Body", req.body);
     if (!repoUrl || !teamId) {
@@ -15,4 +15,19 @@ exports.linkRepo = async (req,res) => {
         return res.status(500).json({ error: 'Failed to create GitHub webhook' });
     }
 }
-// module.exports = linkRepo
+const githubWebhookHandler = async (req, res) => {
+    const { teamId } = req.params;
+    const eventType = req.headers['x-github-event'];
+    const payload = req.body;
+
+    console.log("✅ Received GitHub webhook");
+    console.log("📦 Team ID:", teamId);
+    console.log("📨 Event Type:", eventType);
+    console.log("🔍 Payload:", JSON.stringify(payload, null, 2));
+    res.status(200).send("Webhook received");
+};
+
+module.exports = {
+    linkRepo,
+    githubWebhookHandler
+};
