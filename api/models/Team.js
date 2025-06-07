@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 const teamSchema = mongoose.Schema(
     {
+        teamId: {
+            type: mongoose.Schema.Types.ObjectId,
+            auto: true,
+            required: true,
+        },
         teamName: {
             type: String,
             required: true,
@@ -17,6 +22,10 @@ const teamSchema = mongoose.Schema(
             type: String,
             required: true,
             default: "",
+        },
+        commits: {
+            type: Array,
+            default: [],
         },
     }
 )

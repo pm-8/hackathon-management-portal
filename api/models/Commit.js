@@ -6,6 +6,10 @@ const commitSchema = mongoose.Schema({
     ref: 'Team',
     required: true
   },
+  commitId: {
+    type: String,
+    required: true
+  },
   repoUrl: {
     type: String,
     required: true
