@@ -23,32 +23,18 @@ const githubWebhookHandler = async (req, res) => {
     const payload = req.body;
     console.log("Received GitHub webhook event:", eventType, "for team:", teamId);
     console.log("Payload:", payload);
-    const commit = new Commit({
-        teamId : teamId,
-        commitId: payload.head_commit.id,
-        commitMessage: payload.head_commit.message,
-        committerName: payload.head_commit.author.name,
-        committerEmail: payload.head_commit.author.email,
-        commitUrl: payload.head_commit.url,
-        committedAt: new Date(payload.head_commit.timestamp),
-        repoUrl: payload.repository.html_url
+    console.log(payload.commits[0].message);
+    const commit = await Commit.create({
+        teamId: teamId,
+        commitId: payload.commits[0].id,
+        repoUrl : payload.repository.html_url,
+        commitMessage: payload.commits[0].message,
+        committerName: payload.commits[0].committer.name,
+        committerEmail: payload.commits[0].committer.email,
+        commitUrl: payload.commits[0].url,
+        committedAt: new Date(payload.commits[0].timestamp)
     });
-    try{
-        await commit.save();
-        console.log("Commit saved successfully:", commit);
-        const team = await Team.findById(teamId);
-        if (!team) {
-            console.error("Team not found for ID:", teamId);
-            return res.status(404).json({ error: 'Team not found' });
-        }
-        team.commits.push(commit._id);
-        await team.save();
-        console.log("Team updated with new commit:", team);
-    }
-    catch (error) {
-        console.error('Error saving commit:', error);
-        return res.status(500).json({ error: 'Failed to save commit' });
-    }
+    console.log("Commit saved:", commit);
     res.status(200).send('Webhook received'); 
 };
 
