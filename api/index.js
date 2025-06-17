@@ -4,6 +4,7 @@ const app = express();
 require('dotenv').config();
 const authRoutes = require('./routes/auth')
 const teamRoutes = require('./routes/team')
+const githubRoutes = require('./routes/githubRoutes');
 app.use(express.json());
 const allowedOrigins = ["http://localhost:5173","http://localhost:3000"];
 
@@ -21,6 +22,7 @@ app.use(cors({
 
 app.use("/auth",authRoutes);
 app.use("/team",teamRoutes);
+app.use("/api",githubRoutes);
 app.listen(process.env.PORT, () => {
     console.log(`http://localhost:${process.env.PORT}`);
     }

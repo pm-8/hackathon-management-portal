@@ -12,8 +12,8 @@ mongoose.connect(process.env.DB_URL)
     .catch(err => console.error('MongoDB connection error:', err));
 
 router.use(cors({
-    origin: "http://localhost:5173", // Allow your frontend origin
-    credentials: true, // Allow credentials (cookies)
+    origin: "http://localhost:5173",
+    credentials: true,
 }));
 router.use(express.json());
 
