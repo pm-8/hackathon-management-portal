@@ -4,6 +4,7 @@ import { use } from "react";
 const UserFilter = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [githubURL, setGithubURL] = useState('');
   const [teamname, setTeamName] = useState();
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [teamUsers, setTeamUsers] = useState([]);
@@ -28,7 +29,7 @@ const UserFilter = () => {
     try{
       const response = await fetch("http://localhost:3000/team/create-team",{
         method:"POST",
-        body:JSON.stringify({teamname,teamUsers}),
+        body:JSON.stringify({teamname,teamUsers,githubURL}),
         headers:{"Content-Type":"application/json"}
       });
     }
@@ -86,6 +87,14 @@ const UserFilter = () => {
       </div>
 
       {/* Create Button (Moved Below the User List) */}
+      <input
+            type="text"
+            className="flex-grow px-4 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-green-400"
+            placeholder="Enter Your GitHub Repo URL"
+            value={githubURL}
+            onChange={(e) => setGithubURL(e.target.value)}
+            required
+      />
       <button
         onClick={handleSubmit}
         className="mt-6 px-6 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition"

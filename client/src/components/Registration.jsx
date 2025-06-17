@@ -4,6 +4,7 @@ const Registration = () => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [githubUsername, setGithubUsername] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = async (e) => {
@@ -11,7 +12,7 @@ const Registration = () => {
     try{
       const response = await fetch('http://localhost:3000/auth/register',{
         method : "POST",
-        body : JSON.stringify({fullName,email,password}),
+        body : JSON.stringify({fullName,email,githubUsername,password}),
         headers : {'Content-Type':'application/json'}        
       })
       // localStorage.setItem("isRegistered",true);
@@ -57,6 +58,20 @@ const Registration = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="githubUsername" className="block text-green-200 mb-2 font-serif">
+              GitHub Username
+            </label>
+            <input
+              type="text"
+              id="githubUsername"
+              className="w-full px-4 py-2 border border-green-500 rounded-lg bg-green-700 text-white placeholder-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out"
+              value={githubUsername}
+              onChange={(e) => setGithubUsername(e.target.value)}
+              placeholder="Enter your GitHub username"
               required
             />
           </div>

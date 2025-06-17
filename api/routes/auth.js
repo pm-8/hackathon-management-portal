@@ -25,6 +25,7 @@ router.post('/register', async (req, res) => {
         const userDoc = await User.create({
             fullName: req.body.fullName,
             email: req.body.email,
+            githubUsername: req.body.githubUsername,
             password: hashedPassword,
         });
         res.send(userDoc);

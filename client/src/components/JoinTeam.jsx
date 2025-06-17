@@ -45,6 +45,7 @@ function JoinTeam() {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       <ul className="w-full max-w-lg">
+        
         {teams
           .filter((team) =>
             searchTerm === "" ||
