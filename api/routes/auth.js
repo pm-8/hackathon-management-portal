@@ -26,6 +26,7 @@ router.post('/register', async (req, res) => {
             fullName: req.body.fullName,
             email: req.body.email,
             password: hashedPassword,
+            githubUsername: req.body.githubUsername,
         });
         res.send(userDoc);
     } catch (e) {

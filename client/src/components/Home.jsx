@@ -15,10 +15,10 @@ function Home() {
       )}
       
       <div className="mt-8 flex space-x-6">
-        <Link to="/create-team" className="px-6 py-4 text-xl font-semibold bg-blue-600 text-white rounded-2xl shadow-lg hover:bg-blue-700">
+        <Link to={(isLoggedIn) ? "/create-team" : "/login"} className="px-6 py-4 text-xl font-semibold bg-blue-600 text-white rounded-2xl shadow-lg hover:bg-blue-700">
           Create Team
         </Link>
-        <Link to="/join-team" className="px-6 py-4 text-xl font-semibold bg-green-600 text-white rounded-2xl shadow-lg hover:bg-green-700">
+        <Link to={(isLoggedIn) ? "/join-team" : "/login"} className="px-6 py-4 text-xl font-semibold bg-green-600 text-white rounded-2xl shadow-lg hover:bg-green-700">
           Join Team
         </Link>
       </div>

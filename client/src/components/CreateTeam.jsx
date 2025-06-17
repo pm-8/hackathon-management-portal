@@ -3,6 +3,7 @@ import UserFilter from './Users';
 
 function CreateTeam() {
   const [teamName, setTeamName] = useState('');
+  const [githubRepoUrl, setGithubRepoUrl] = useState('');
   const [showModal, setShowModal] = useState(false);
 
   const postName = async (e) => {
@@ -26,6 +27,15 @@ function CreateTeam() {
             placeholder="Enter Your Team Name"
             value={teamName}
             onChange={(e) => setTeamName(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            className="flex-grow px-4 py-2 border border-gray-400 rounded-lg
+            focus:ring-2 focus:ring-green-400"
+            placeholder="Enter Your GitHub Repo URL"
+            value={githubRepoUrl}
+            onChange={(e) => setGithubRepoUrl(e.target.value)}
             required
           />
           <button type="submit" className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
