@@ -56,7 +56,6 @@ router.post('/create-team', async (req,res) => {
 })
 router.post('/join-team/:teamId/:userId', async (req, res) => {
     try {
-        // console.log(req.body);
         console.log("Request Body",req.params);
         const teamDoc = await Team.findById(req.params.teamId);
         const user = await User.findById(req.params.userId);
