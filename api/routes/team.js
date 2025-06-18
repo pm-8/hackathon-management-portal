@@ -75,7 +75,6 @@ router.post('/join-team/:teamId/:userId', async (req, res) => {
         res.status(400).json(err);
     }
 });
-
 router.get('/teams/:teamName', async (req,res) => {
     console.log("Request Params",req.params);
     console.log("Request Body",req.body);
