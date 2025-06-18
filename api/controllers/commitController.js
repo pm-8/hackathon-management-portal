@@ -35,6 +35,14 @@ const githubWebhookHandler = async (req, res) => {
         committedAt: new Date(payload.commits[0].timestamp)
     });
     console.log("Commit saved:", commit);
+<<<<<<< HEAD
+=======
+    await Team.findByIdAndUpdate(
+            teamId,
+            { $push: { commits: commit._id } }
+        );
+    console.log("Team updated with new commit:", teamId);
+>>>>>>> recovered-dashboard
     res.status(200).send('Webhook received'); 
 };
 

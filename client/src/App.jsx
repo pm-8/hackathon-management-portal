@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import Registration from './components/Registration'
 import Users from './components/Users'
 import JoinTeam from './components/JoinTeam'
+import TeamDashboard from './components/TeamDashboard'
 import Home from './components/Home'
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 import CreateTeam from './components/CreateTeam'
@@ -33,6 +34,10 @@ function App() {
     {
       path:'/join-team',
       element:<><Navbar/><JoinTeam/></>
+    },
+    {
+      path:'/team-dashboard',
+      element:<><Navbar/><TeamDashboard/></>
     }
   ])
   return (

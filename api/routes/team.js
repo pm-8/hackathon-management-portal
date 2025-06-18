@@ -5,6 +5,8 @@ const bcryptjs = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const User = require('../models/User');
 const Team = require('../models/Team');
+const Commit = require('../models/Commit');
+const createWebhook = require('../utils/githubWebhook').createWebhook;
 const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -23,8 +25,28 @@ router.post('/create-team', async (req,res) => {
         const teamDoc = await Team.create({
             teamName : req.body.teamname,
             teamMembers: req.body.teamUsers,
-            teamLeader: req.body.teamUsers[0].name
+            teamLeader: req.body.teamUsers[0].name,
+            githubRepo: req.body.githubURL,
         });
+
+        // Call /api/linkRepo to create webhook
+        const axios = require('axios');
+        try {
+            const webhookRes = await axios.post(
+                `${process.env.API_URL}/api/linkRepo`,
+                {
+                    repoUrl: req.body.githubURL,
+                    teamId: teamDoc._id
+                },
+                {
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
+            console.log('Webhook created:', webhookRes.data);
+        } catch (webhookErr) {
+            console.error('Failed to create webhook:', webhookErr.response ? webhookErr.response.data : webhookErr.message);
+        }
+
         res.send(teamDoc);
     }
     catch(err){
@@ -34,7 +56,6 @@ router.post('/create-team', async (req,res) => {
 })
 router.post('/join-team/:teamId/:userId', async (req, res) => {
     try {
-        // console.log(req.body);
         console.log("Request Body",req.params);
         const teamDoc = await Team.findById(req.params.teamId);
         const user = await User.findById(req.params.userId);
@@ -53,11 +74,14 @@ router.post('/join-team/:teamId/:userId', async (req, res) => {
         res.status(400).json(err);
     }
 });
-
-router.get('/teams', async (req,res) => {
+router.get('/teams/:teamName', async (req,res) => {
+    console.log("Request Params",req.params);
+    console.log("Request Body",req.body);
     try{
-        const teamDoc = await Team.find();
-        res.send(teamDoc);
+        const teamDoc = await Team.findOne({ teamName: req.params.teamName }).populate('teamMembers.id', 'fullName email');
+        const commitDoc = await Commit.find({ teamId: teamDoc._id });
+        console.log("Team Doc",teamDoc);
+        res.json({ team: teamDoc, commits: commitDoc });
     }
     catch(err){
         console.error("Error in fetching teams",err);
