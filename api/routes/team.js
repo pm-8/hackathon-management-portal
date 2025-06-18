@@ -5,6 +5,7 @@ const bcryptjs = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const User = require('../models/User');
 const Team = require('../models/Team');
+const Commit = require('../models/Commit');
 const createWebhook = require('../utils/githubWebhook').createWebhook;
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -75,10 +76,14 @@ router.post('/join-team/:teamId/:userId', async (req, res) => {
     }
 });
 
-router.get('/teams', async (req,res) => {
+router.get('/teams/:teamName', async (req,res) => {
+    console.log("Request Params",req.params);
+    console.log("Request Body",req.body);
     try{
-        const teamDoc = await Team.find();
-        res.send(teamDoc);
+        const teamDoc = await Team.findOne({ teamName: req.params.teamName }).populate('teamMembers.id', 'fullName email');
+        const commitDoc = await Commit.find({ teamId: teamDoc._id });
+        console.log("Team Doc",teamDoc);
+        res.json({ team: teamDoc, commits: commitDoc });
     }
     catch(err){
         console.error("Error in fetching teams",err);
