@@ -19,13 +19,13 @@ app.use(cors({
     credentials: true,
 }));
 
-app.use(session({
-    secret: process.env.SECRET_KEY || 'secret',
-    resave: false,
-    saveUninitialized: true,
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(session({
+//     secret: process.env.SECRET_KEY || 'secret',
+//     resave: false,
+//     saveUninitialized: true,
+// }));
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use("/auth",authRoutes);
 app.use("/team",teamRoutes);
